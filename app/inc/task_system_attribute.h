@@ -62,35 +62,38 @@ extern "C" {
  */
 
 /* Events to excite Task System */
-typedef enum task_system_ev {EV_SYS_XX_IDLE,
-							 EV_SYS_XX_ACTIVE,
-							 EV_SYST_01_DETECTED_CAR,
-							 EV_SYST_01_NO_CAR_DETECTED,
-							 EV_SYST_01_BUTTON_PRESSED,
-							 EV_SYST_01_BUTTON_NOT_PRESSED,
-							 EV_SYST_01_TICKET_TAKEN,
-							 EV_SYST_01_TICKET_NOT_TAKEN,
-							 EV_SYST_01_BARRIER_UP,
-							 EV_SYST_01_BARRIER_NOT_UP,
-							 EV_SYST_01_CAR_PASSED,
-							 EV_SYST_01_CAR_NOT_PASSED,
-							 EV_SYST_01_BARRIER_DOWN,
-							 EV_SYST_01_BARRIER_NOT_DOWN} task_system_ev_t;
+typedef enum task_system_ev {EV_SYST_IDLE,
+							 EV_SYST_CTRL_ON,
+							 EV_SYST_CTRL_OFF,
+							 EV_SYST_PACK_IN,
+							 EV_SYST_PACK_OUT,
+							 EV_SYST_NO_PACKS,
+							 EV_SYST_SETUP_ON,
+							 EV_SYST_SETUP_OFF,
+							 EV_SETUP_ENTER,
+							 EV_SETUP_ESCAPE,
+							 EV_SETUP_NEXT} task_system_ev_t;
 
 /* State of Task System */
-typedef enum task_system_st {ST_SYS_XX_IDLE,
-							 ST_SYS_XX_ACTIVE,
-							 ST_SYST_01_WAITING,
-							 ST_SYST_01_REQUESTING,
-							 ST_SYST_01_ISSUING_TICKET,
-							 ST_SYST_01_OPENING_BARRIER,
-							 ST_SYST_01_BARRIER_HALTED,
-							 ST_SYST_01_CLOSING_BARRIER} task_system_st_t;
+typedef enum task_system_st {ST_SYST_IDLE,
+							 ST_SYST_CTRL,
+							 ST_SYST_SETUP} task_system_st_t;
+
+/* Composed State of Task System */
+typedef enum task_system_composed_st {ST_SETUP_INIT_MENU,
+	 	 	 	 	 	 	 	 	  ST_SETUP_MENU_PACKS_LIM,
+									  ST_SETUP_MENU_WAITING_TIME} task_system_composed_st_t;
 
 typedef struct
 {
 	uint32_t			tick;
+	uint32_t			speed;
+	uint32_t			qty_packs;
+	uint32_t			pack_rate;
+	uint32_t			waiting_time;
+	uint32_t			option;
 	task_system_st_t	state;
+	task_system_composed_st_t	composed_state;
 	task_system_ev_t	event;
 	bool				flag;
 } task_system_dta_t;
